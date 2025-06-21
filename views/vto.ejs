@@ -1,0 +1,168 @@
+<!-- Loading Header modules from snippets -->
+<%- include('snippets/header') %>
+
+
+
+<main class="max-w-screen-xl py-10 px-16 mx-auto">
+    <div class="  w-full bg-white p-6 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold text-center mb-6">Virtual Try-On</h2>
+        <div class="grid grid-cols-2 gap-6">
+            <form id="uploadForm" class="space-y-6">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>"> <!-- CSRF Token -->
+    
+                <!-- Model Selection -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Choose a Model:</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <% const models = [
+                            "https://i.ibb.co/Q7C8hWn8/ma1.jpg",
+                            "https://i.ibb.co/whP4gMqF/ma2.jpg",
+                            "https://i.ibb.co/zWRvgVzY/ma3.jpg",
+                            "https://i.ibb.co/qMPz3y9w/ma4.jpg",
+                            "http://localhost:3000/models/im1.jpg",
+
+                            "http://localhost:3000/models/im2.jpg",
+                            "http://localhost:3000/models/im3.jpg",
+
+                            "http://localhost:3000/models/im4.jpg"
+                        ]; %>
+    
+                        <% models.forEach((model) => { %>
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="modelImageUrl" value="<%= model %>" class="peer hidden" required>
+                                <img src="<%= model %>" class="w-full h-full object-cover rounded-lg border-4 border-transparent peer-checked:border-blue-500 transition duration-300 hover:scale-105">
+                            </label>
+                        <% }) %>
+                    </div>
+                </div>
+    
+                <!-- Cloth Selection -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Choose a Cloth:</h3>
+                    <div class="grid grid-cols-6 md:grid-cols-6 gap-4">
+                        <% const clothes = [
+                            "https://i.ibb.co/39KBN2FN/t1.jpg",
+                            "https://i.ibb.co/cXTGPxMK/t2.jpg",
+                            "https://i.ibb.co/gLJdVJNK/t3.jpg",
+                            "https://i.ibb.co/G3brNjFs/t4.jpg",
+                            "https://i.ibb.co/wNsRx18t/t5.jpg",
+                            "https://i.ibb.co/chs809Lz/t6.jpg",
+                            "http://localhost:3000/clothes/c1.jpg",
+                            "http://localhost:3000/clothes/c2.jpg"
+                        ]; %>
+    
+                        <% clothes.forEach((cloth) => { %>
+                            <label class="cursor-pointer relative group">
+                                <input type="radio" name="clothImageUrl" value="<%= cloth %>" class="peer hidden" required>
+                                <img src="<%= cloth %>" class="w-28 h-28 object-cover rounded-lg border-4 border-transparent peer-checked:border-green-500 transition duration-300 hover:scale-105">
+                            </label>
+                        <% }) %>
+                    </div>
+                </div>
+    
+                <!-- Live Preview -->
+                <div class="flex justify-center gap-6 mt-6">
+                    <div>
+                        <h4 class="text-center text-sm font-semibold">Selected Model</h4>
+                        <img id="modelPreview" src="<%= models[0] %>" class="w-36 h-36 object-cover rounded-lg shadow-md transition duration-300">
+                    </div>
+                    <div>
+                        <h4 class="text-center text-sm font-semibold">Selected Cloth</h4>
+                        <img id="clothPreview" src="<%= clothes[0] %>" class="w-36 h-36 object-cover rounded-lg shadow-md transition duration-300">
+                    </div>
+                </div>
+    
+                <!-- Submit Button -->
+                <button type="submit" id="submitButton" class="w-full py-3 bg-blue-500 text-white hover:bg-blue-600 transition rounded-lg font-semibold text-lg">
+                    Generate Try-On
+                </button>
+            </form>
+            <div class="bg-gray-100 p-5 rounded-md">
+                <div class="text-lg font-semibold">Output</div>
+                <!-- Loading Animation (Hidden by Default) -->
+        <div id="loadingContainer" class="mt-6 text-center hidden">
+            <img src="https://i.ibb.co/WvNyQk5C/ZKZg.gif" class="w-20 mx-auto mt-3">
+        </div>
+
+        <!-- Generated Image Preview -->
+        <div id="outputContainer" class="mt-6 text-center hidden animate-fade-in">
+            <h4 class="text-lg font-semibold">Generated Try-On Image</h4>
+            <img id="outputImage" src="" class="w-64 mx-auto mt-3 rounded-lg shadow-md">
+        </div>
+            </div>
+        </div>
+        
+
+        
+    </div>
+
+    <!-- AJAX Submission Script -->
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = document.getElementById("uploadForm");
+            const formData = new FormData(form);
+            const csrfToken = document.querySelector('input[name="_csrf"]').value;
+            const submitButton = document.getElementById("submitButton");
+            const loadingContainer = document.getElementById("loadingContainer");
+            const outputContainer = document.getElementById("outputContainer");
+            const outputImage = document.getElementById("outputImage");
+
+            // Disable button and show loading GIF
+            submitButton.disabled = true;
+            submitButton.innerText = "Processing...";
+            loadingContainer.style.display = "block";
+            outputContainer.style.display = "none"; // Hide previous output
+
+            // Convert FormData to URLSearchParams
+            const urlEncodedData = new URLSearchParams();
+            for (const [key, value] of formData.entries()) {
+                urlEncodedData.append(key, value);
+            }
+
+            try {
+                const response = await fetch('/vto', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRF-Token': csrfToken // Send CSRF token
+                    },
+                    body: urlEncodedData
+                });
+
+                const result = await response.json();
+
+                if (result.imageUrl) {
+                    outputImage.src = result.imageUrl;
+                    outputContainer.style.display = "block";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            } finally {
+                // Re-enable button and hide loading GIF
+                submitButton.disabled = false;
+                submitButton.innerText = "Generate Try-On";
+                loadingContainer.style.display = "none";
+            }
+        }
+
+        document.getElementById("uploadForm").addEventListener("submit", submitForm);
+
+        // Update live preview when model/cloth selection changes
+        document.querySelectorAll('input[name="modelImageUrl"]').forEach(input => {
+            input.addEventListener('change', function() {
+                document.getElementById('modelPreview').src = this.value;
+            });
+        });
+
+        document.querySelectorAll('input[name="clothImageUrl"]').forEach(input => {
+            input.addEventListener('change', function() {
+                document.getElementById('clothPreview').src = this.value;
+            });
+        });
+    </script>
+</main>
+
+<!-- Loading Footer modules from snippets -->
+<%- include('snippets/footer') %>

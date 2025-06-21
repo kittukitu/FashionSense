@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Application</title>
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+     <style>
+    @keyframes gradient-x {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+  
+    .animate-gradient-x {
+      background-size: 200% 200%;
+      animation: gradient-x 3s ease infinite;
+    }
+  
+    .animate-pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+  
+    .backdrop-blur-md {
+      backdrop-filter: blur(8px);
+    }
+  
+    .backdrop-blur-sm {
+      backdrop-filter: blur(4px);
+    }
+
+    @keyframes gradient-x {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  
+    .animate-gradient-x {
+      background-size: 200% 200%;
+      animation: gradient-x 3s ease infinite;
+    }
+  </style>
+  
+</head>
+<body class="bg-emerald-100">
+  <nav class="p-4 shadow-lg bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600 backdrop-blur-sm" style="background-image: url('https://i.ibb.co/4gRHB9B9/pexels-julia-m-cameron-6995017.jpg'); background-size: cover; background-position: center;">
+    <div class="flex flex-col items-center justify-center max-w-screen-xl px-4 mx-auto sm:px-16">
+      <!-- Futuristic FashionSense Logo with Gradient Animation -->
+      <h1 class="my-6 mb-6 text-4xl font-extrabold text-center text-transparent text-white md:text-5xl bg-clip-text bg-gradient-to-r from-green-300 via-lime-400 to-emerald-500 animate-gradient-x">
+        <a href="/" class="p-4 text-gray-900 transition-transform duration-300 bg-white rounded hover:scale-105 bg-opacity-60">FashionSense</a>
+      </h1>
+    </div>
+  </nav>
+  
+  <nav class="p-4 shadow-lg bg-gradient-to-r from-emerald-700 via-emerald-600 to-emerald-500 backdrop-blur-sm">
+    <div class="flex flex-col items-center justify-center max-w-screen-xl px-4 mx-auto sm:px-16">
+    
+      <!-- Navigation Links with Hover and Active States -->
+      <div id="nav-menu" class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <a href="/" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+          Home
+        </a>
+        <a href="/aiapp" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+          Apparel Suggester 
+        </a>
+        <a href="/index" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+          Avatar Generator 
+        </a>
+        <a href="/vto" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+          Virtual TryOn 
+        </a>
+        <a href="/profile" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+          Profile
+        </a>
+        <% if (user && user.role !== 'user') { %>
+          <a href="/admin" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+            Admin
+          </a>
+        <% } %>
+        <a href="/logout" class="px-5 py-3 text-white transition-all duration-300 ease-in-out transform rounded-lg text-xlfont-medium bg-emerald-500/20 backdrop-blur-md hover:bg-emerald-500/40 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+          Logout
+        </a>
+      </div>
+    </div>
+  </nav>
+  
+ 
+  <script>
+    // JavaScript to improve responsiveness
+    document.addEventListener("DOMContentLoaded", function () {
+      const navMenu = document.getElementById("nav-menu");
+      const logo = document.querySelector("h1");
+  
+      function adjustLayout() {
+        if (window.innerWidth < 640) {
+          // Mobile view: Center-align logo and menu
+          logo.classList.add("text-center");
+          navMenu.classList.add("text-center");
+        } else {
+          // Desktop view: Reset alignment
+          logo.classList.remove("text-center");
+          navMenu.classList.remove("text-center");
+        }
+      }
+  
+      // Adjust layout on page load and window resize
+      adjustLayout();
+      window.addEventListener("resize", adjustLayout);
+    });
+  </script>

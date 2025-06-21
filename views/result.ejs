@@ -1,0 +1,33 @@
+<!-- Loading Header modules from snippets -->
+<%- include('snippets/header') %>
+
+    <!-- Result Section -->
+    <div class="container p-8 mx-auto mt-24 bg-white rounded-lg shadow-lg">
+        <h1 class="mb-6 text-3xl font-semibold text-pink-600">AI Image Generated Successfully!</h1>
+
+        <!-- Response Message -->
+        <div class="mb-4 text-lg font-medium text-gray-800">
+            <p class="mb-4 text-xl text-center text-gray-700">Here is the image based on your request:</p>
+
+            <div class="flex justify-center mb-6">
+                <img src="<%= imageUrl %>" alt="Generated Image" class="h-auto max-w-full rounded-lg shadow-xl">
+            </div>
+
+            <div class="space-y-4 text-center">
+                <p><strong>Prompt:</strong> <%= prompt %></p>
+                <p><strong>Style:</strong> <%= style %></p>
+                <p><strong>Resolution:</strong> <%= resolution %></p>
+                <p><strong>Gender:</strong> <%= gender %></p>
+                <p><strong>Style Option:</strong> <%= styleOption %></p>
+            </div>
+        </div>
+
+        <!-- Retry Button -->
+        <div class="flex justify-center mt-8">
+            <a href="/" class="px-6 py-3 text-white rounded-md bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:outline-none">Try Again</a>
+        </div>
+    </div>
+     
+ <!-- Loading Footer modules from snippets -->
+ <%- include('snippets/footer') %>
+   

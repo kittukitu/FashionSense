@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Fashion Sense</title>
+  <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAQHwjXyAiIxUCnh3-cFywq0K4ZmDFo20YAw&s">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    body {
+      background-image: url('https://i.ibb.co/4gRHB9B9/pexels-julia-m-cameron-6995017.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .register-box {
+      background-color: rgba(255, 255, 255, 0.9); /* Light, semi-transparent background */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    @keyframes gradient-x {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .animate-gradient-x {
+      background-size: 200% 200%;
+      animation: gradient-x 3s ease infinite;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center my-10 bg-gray-900 bg-opacity-60">
+  <!-- Register Form -->
+  <div class="w-full max-w-md p-10 rounded-lg register-box">
+    <h1 class="mb-4 text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-yellow-600 to-brown-600 animate-gradient-x">
+      FashionSense
+    </h1>
+    <p class="mb-6 text-lg text-center text-gray-600">Your personal AI stylist is just a sign up away!</p>
+
+    <!-- Display error message if any -->
+    <% if (error) { %>
+      <div class="p-4 mb-4 text-white bg-red-500 rounded">
+        <p><%= error %></p>
+      </div>
+    <% } %>
+
+    <!-- Registration Form -->
+    <form action="/register" method="POST" class="space-y-6">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <div>
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Name</label>
+        <input type="text" name="name" id="name" required class="w-full p-4 text-gray-800 placeholder-gray-400 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="phone" class="block mb-2 text-sm font-medium text-gray-700">Phone</label>
+        <input type="text" name="phone" id="phone" required class="w-full p-4 text-gray-800 placeholder-gray-400 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Email</label>
+        <input type="email" name="email" id="email" required class="w-full p-4 text-gray-800 placeholder-gray-400 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="password" class="block mb-2 text-sm font-medium text-gray-700">Password</label>
+        <input type="password" name="password" id="password" required class="w-full p-4 text-gray-800 placeholder-gray-400 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="gender" class="block mb-2 text-sm font-medium text-gray-700">Gender</label>
+        <select name="gender" id="gender" required class="w-full p-4 text-gray-800 placeholder-gray-400 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="" disabled selected>Select your gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="location" class="block mb-2 text-sm font-medium text-gray-700">Location</label>
+        <input type="text" name="location" id="location" required class="w-full p-4 text-gray-800 placeholder-gray-400 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <button type="submit" class="w-full py-3 text-white transition-colors duration-300 ease-in-out rounded-md bg-emerald-600 hover:bg-green-700">Register</button>
+    </form>
+
+    <p class="mt-4 text-sm text-center text-gray-600">
+      <a href="/login" class="text-emerald-500 hover:text-emerald-400">Already have an account? Login here.</a>
+    </p>
+  </div>
+</body>
+</html>

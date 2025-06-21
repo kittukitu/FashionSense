@@ -1,0 +1,314 @@
+ <!-- Loading Header modules from snippets -->
+ <%- include('snippets/header') %>
+
+ <script>
+  // Function to generate suggestions based on the form inputs
+  function getSuggestions() {
+    // Get all required fields
+    const style = document.getElementById('style')?.value;
+    const occasion = document.getElementById('occasion')?.value;
+    const color = document.getElementById('color')?.value;
+    const weather = document.getElementById('weather')?.value;
+    const budget = document.getElementById('budget')?.value;
+
+    // Check if all fields are filled
+    if (!style || !occasion || !color || !weather || !budget) {
+      alert('Please answer all questions before proceeding.');
+      return;
+    }
+
+    // Create an object with the selected options
+    const formData = {
+      style,
+      occasion,
+      color,
+      weather,
+      budget
+    };
+
+    console.log('Selected Options:', formData);
+
+    // Default suggestions array
+    let clothesSuggestions = [];
+    let accessoriesSuggestions = [];
+
+    // Image URLs
+    const images = {
+      "T-shirt": "/images/t-shirt.png",
+      "Jeans": "/images/jeans.png",
+      "Casual Shirt": "/images/casual-shirt.png",
+      "Sneakers": "/images/sneakers.png",
+      "Suit": "/images/suit.png",
+      "Dress Shirt": "/images/dress-shirt.png",
+      "Formal Pants": "/images/formal-pants.png",
+      "Leather Shoes": "/images/leather-shoes.png",
+      "Blazer": "/images/blazer.png",
+      "Chinos": "/images/chinos.png",
+      "Polo Shirt": "/images/polo-shirt.png",
+      "Loafers": "/images/loafers.png",
+      "Light Blue Shirt": "/images/light-blue-shirt.png",
+      "White Sneakers": "/images/white-sneakers.png",
+      "Black Jeans": "/images/black-jeans.png",
+      "Dark Jacket": "/images/dark-jacket.png",
+      "Red T-shirt": "/images/red-t-shirt.png",
+      "Yellow Sneakers": "/images/yellow-sneakers.png",
+      "Shorts": "/images/shorts.png",
+      "Tank Top": "/images/tank-top.png",
+      "Flip Flops": "/images/flip-flops.png",
+      "Jacket": "/images/jacket.png",
+      "Hoodie": "/images/hoodie.png",
+      "Boots": "/images/boots.png",
+      "Sunglasses": "/images/sunglasses.png",
+      "Casual Watch": "/images/casual-watch.png",
+      "Baseball Cap": "/images/baseball-cap.png",
+      "Tie": "/images/tie.png",
+      "Cufflinks": "/images/cufflinks.png",
+      "Leather Belt": "/images/leather-belt.png",
+      "Affordable Watch": "/images/affordable-watch.png",
+      "Casual Cap": "/images/casual-cap.png",
+      "Stylish Watch": "/images/stylish-watch.png",
+      "Leather Wallet": "/images/leather-wallet.png",
+      "Luxury Watch": "/images/luxury-watch.png",
+      "Designer Belt": "/images/designer-belt.png"
+    };
+
+    // Logic for clothing suggestions
+    if (style === "casual") {
+      clothesSuggestions.push("T-shirt", "Jeans", "Casual Shirt", "Sneakers");
+    } else if (style === "formal") {
+      clothesSuggestions.push("Suit", "Dress Shirt", "Formal Pants", "Leather Shoes");
+    } else if (style === "smart-casual") {
+      clothesSuggestions.push("Blazer", "Chinos", "Polo Shirt", "Loafers");
+    }
+
+    // Logic for accessories suggestions
+    if (occasion === "casual") {
+      accessoriesSuggestions.push("Sunglasses", "Casual Watch", "Baseball Cap");
+    } else if (occasion === "formal") {
+      accessoriesSuggestions.push("Tie", "Cufflinks", "Leather Belt");
+    }
+
+    // Adjusting suggestions based on color
+    if (color === "light") {
+      clothesSuggestions.push("Light Blue Shirt", "White Sneakers");
+    } else if (color === "dark") {
+      clothesSuggestions.push("Black Jeans", "Dark Jacket");
+    } else if (color === "vibrant") {
+      clothesSuggestions.push("Red T-shirt", "Yellow Sneakers");
+    }
+
+    // Weather-based suggestions
+    if (weather === "warm") {
+      clothesSuggestions.push("Shorts", "Tank Top", "Flip Flops");
+    } else if (weather === "cold") {
+      clothesSuggestions.push("Jacket", "Hoodie", "Boots");
+    }
+
+    // Budget-based recommendations
+    if (budget === "low") {
+      accessoriesSuggestions.push("Affordable Watch", "Casual Cap");
+    } else if (budget === "medium") {
+      accessoriesSuggestions.push("Stylish Watch", "Leather Wallet");
+    } else if (budget === "high") {
+      accessoriesSuggestions.push("Luxury Watch", "Designer Belt");
+    }
+
+    // Display loading state for clothes and accessories
+    const clothesContainer = document.getElementById("clothes-suggestions");
+    const accessoriesContainer = document.getElementById("accessories-suggestions");
+
+    clothesContainer.innerHTML = `<img src="images/loading.gif" class="w-8 h-8 mr-2" > <p class="text-xl font-semibold">Reviewing...</p>`;
+    accessoriesContainer.innerHTML ='';
+    // Step 1: Show "Reviewing" for 3 seconds
+    setTimeout(() => {
+      clothesContainer.innerHTML = `<img src="images/loading.gif" class="w-8 h-8 mr-2" > <p class="text-xl font-semibold">Generating...</p>`;
+
+      // Step 2: Show "Generating" for 3 seconds
+      setTimeout(() => {
+        // Step 3: Show the actual suggestions with images
+        clothesContainer.innerHTML = "";
+        accessoriesContainer.innerHTML = "";
+
+        clothesSuggestions.forEach(item => {
+          const imgSrc = images[item];
+
+          // Create the card container
+          let card = `
+            <div class="bg-white shadow-md rounded-lg p-4 m-2 max-w-xs">
+          `;
+
+          // Check if the image source exists and is not empty
+          if (imgSrc) {
+            card += `<img class="w-full h-48 object-cover rounded-md" src="${imgSrc}" alt="${item}">`;
+          }
+
+          // Add the title regardless of the image
+          card += `<h3 class="text-xl font-bold mt-2">${item}</h3></div>`;
+
+          // Append the card to the container
+          clothesContainer.innerHTML += card;
+        });
+
+        accessoriesSuggestions.forEach(item => {
+          const imgSrc = images[item] || "https://via.placeholder.com/150"; // Placeholder if no image
+          const card = `
+            <div class="bg-white shadow-md rounded-lg p-4 m-2 max-w-xs">
+              <img class="w-full h-48 object-cover rounded-md" src="${imgSrc}" alt="${item}">
+              <h3 class="text-xl font-bold mt-2">${item}</h3>
+            </div>
+          `;
+          accessoriesContainer.innerHTML += card;
+        });
+
+      }, 3000); // Show "Generating" for 3 seconds
+
+    }, 3000); // Show "Reviewing" for 3 seconds
+  }
+</script>
+
+<main class="max-w-screen-xl px-16 mx-auto">
+    <!-- Main Container -->
+    <div class=" px-6 py-8">
+      
+      <form id="fashion-form" class="space-y-8 p-6 bg-white rounded-xl shadow-md ">
+        <!-- Question 1: Style -->
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-gray-800">What style are you looking for?</h3>
+          <div class="grid grid-cols-4 gap-4">
+            <div onclick="selectOption('style', 'casual', this)" class="option-card">
+              Casual
+            </div>
+            <div onclick="selectOption('style', 'formal', this)" class="option-card">
+              Formal
+            </div>
+            <div onclick="selectOption('style', 'sportswear', this)" class="option-card">
+              Sportswear
+            </div>
+            <div onclick="selectOption('style', 'smart-casual', this)" class="option-card">
+              Smart Casual
+            </div>
+          </div>
+          <input type="hidden" name="style" id="style" required>
+        </div>
+      
+        <!-- Question 2: Occasion -->
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-gray-800">What occasion are you shopping for?</h3>
+          <div class="grid grid-cols-4 gap-4">
+            <div onclick="selectOption('occasion', 'casual', this)" class="option-card">
+              Casual outing
+            </div>
+            <div onclick="selectOption('occasion', 'formal', this)" class="option-card">
+              Formal event
+            </div>
+            <div onclick="selectOption('occasion', 'sports', this)" class="option-card">
+              Sporting activity
+            </div>
+          </div>
+          <input type="hidden" name="occasion" id="occasion" required>
+        </div>
+      
+        <!-- Question 3: Preferred Color -->
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-gray-800">What color palette do you prefer?</h3>
+          <div class="grid grid-cols-4 gap-4">
+            <div onclick="selectOption('color', 'light', this)" class="option-card">
+              Light Colors
+            </div>
+            <div onclick="selectOption('color', 'dark', this)" class="option-card">
+              Dark Colors
+            </div>
+            <div onclick="selectOption('color', 'vibrant', this)" class="option-card">
+              Vibrant Colors
+            </div>
+          </div>
+          <input type="hidden" name="color" id="color" required>
+        </div>
+      
+        <!-- Question 4: Weather -->
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-gray-800">What's the weather like?</h3>
+          <div class="grid grid-cols-4 gap-4">
+            <div onclick="selectOption('weather', 'warm', this)" class="option-card">
+              Warm
+            </div>
+            <div onclick="selectOption('weather', 'cold', this)" class="option-card">
+              Cold
+            </div>
+          </div>
+          <input type="hidden" name="weather" id="weather" required>
+        </div>
+      
+        <!-- Question 5: Budget -->
+        <div class="space-y-4">
+          <h3 class="text-2xl font-bold text-gray-800">What's your budget?</h3>
+          <div class="grid grid-cols-3 gap-4">
+            <div onclick="selectOption('budget', 'low', this)" class="option-card">
+              Low
+            </div>
+            <div onclick="selectOption('budget', 'medium', this)" class="option-card">
+              Medium
+            </div>
+            <div onclick="selectOption('budget', 'high', this)" class="option-card">
+              High
+            </div>
+          </div>
+          <input type="hidden" name="budget" id="budget" required>
+        </div>
+      
+        <!-- Submit Button -->
+        <button type="button" onclick="getSuggestions()" class="w-full py-3 text-white font-bold rounded-lg bg-gradient-to-r from-pink-500 to-red-500 hover:from-red-500 hover:to-pink-500 transition duration-300 transform hover:scale-105">
+          Get Suggestions
+        </button>
+      </form>
+      
+      <script>
+        function selectOption(question, value, element) {
+          // Clear previous selection
+          document.querySelectorAll(`[onclick^="selectOption('${question}'"]`).forEach(el => {
+            el.classList.remove('selected-card');
+          });
+      
+          // Highlight the selected option
+          element.classList.add('selected-card');
+      
+          // Set hidden input value
+          document.getElementById(question).value = value;
+        }
+      </script>
+      
+      <style>
+        .option-card {
+          padding: 1rem;
+          background: white;
+          border: 3px solid #ececec;
+          border-radius: 8px;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .option-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .selected-card {
+          border-color: #d946ef;
+          background: linear-gradient(135deg, #f0abfc 0%, #ec4899 100%);
+          color: white;
+        }
+      </style>
+  
+      <section class="pt-5">
+        <div id="clothes-suggestions" class="flex flex-wrap"></div>
+        <div id="accessories-suggestions" class="flex flex-wrap"></div>  
+      </section>
+      
+  
+</main>
+      
+ <!-- Loading Footer modules from snippets -->
+ <%- include('snippets/footer') %>
+   
