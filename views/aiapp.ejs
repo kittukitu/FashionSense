@@ -134,16 +134,16 @@
 
           // Create the card container
           let card = `
-            <div class="bg-white shadow-md rounded-lg p-4 m-2 max-w-xs">
+            <div class="max-w-xs p-4 m-2 bg-white rounded-lg shadow-md">
           `;
 
           // Check if the image source exists and is not empty
           if (imgSrc) {
-            card += `<img class="w-full h-48 object-cover rounded-md" src="${imgSrc}" alt="${item}">`;
+            card += `<img class="object-cover w-full h-48 rounded-md" src="${imgSrc}" alt="${item}">`;
           }
 
           // Add the title regardless of the image
-          card += `<h3 class="text-xl font-bold mt-2">${item}</h3></div>`;
+          card += `<h3 class="mt-2 text-xl font-bold">${item}</h3></div>`;
 
           // Append the card to the container
           clothesContainer.innerHTML += card;
@@ -152,9 +152,9 @@
         accessoriesSuggestions.forEach(item => {
           const imgSrc = images[item] || "https://via.placeholder.com/150"; // Placeholder if no image
           const card = `
-            <div class="bg-white shadow-md rounded-lg p-4 m-2 max-w-xs">
-              <img class="w-full h-48 object-cover rounded-md" src="${imgSrc}" alt="${item}">
-              <h3 class="text-xl font-bold mt-2">${item}</h3>
+            <div class="max-w-xs p-4 m-2 bg-white rounded-lg shadow-md">
+              <img class="object-cover w-full h-48 rounded-md" src="${imgSrc}" alt="${item}">
+              <h3 class="mt-2 text-xl font-bold">${item}</h3>
             </div>
           `;
           accessoriesContainer.innerHTML += card;
@@ -168,9 +168,9 @@
 
 <main class="max-w-screen-xl px-16 mx-auto">
     <!-- Main Container -->
-    <div class=" px-6 py-8">
+    <div class="px-6 py-8 ">
       
-      <form id="fashion-form" class="space-y-8 p-6 bg-white rounded-xl shadow-md ">
+      <form id="fashion-form" class="p-6 space-y-8 bg-white shadow-md rounded-xl ">
         <!-- Question 1: Style -->
         <div class="space-y-4">
           <h3 class="text-2xl font-bold text-gray-800">What style are you looking for?</h3>
@@ -257,7 +257,7 @@
         </div>
       
         <!-- Submit Button -->
-        <button type="button" onclick="getSuggestions()" class="w-full py-3 text-white font-bold rounded-lg bg-gradient-to-r from-pink-500 to-red-500 hover:from-red-500 hover:to-pink-500 transition duration-300 transform hover:scale-105">
+        <button type="button" onclick="getSuggestions()" class="w-full py-3 font-bold text-black transition duration-300 transform bg-red-500 rounded-lg hover:to-pink-500 hover:scale-105">
           Get Suggestions
         </button>
       </form>
